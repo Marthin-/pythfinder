@@ -7,8 +7,6 @@ def init_db():
 	c=conn.cursor()
 	try:
 		c.execute("CREATE table joueurs(nom_perso text, nom_joueur text,role text)")
-		com=[('earlinde','soline','dps'),('gunnar','romain','tank'),('fonzie','martin','element comique'),]
-		c.executemany("INSERT INTO joueurs VALUES(?,?,?)",com)
 		conn.commit()
 	except sqlite3.DatabaseError:
 		print("error : database already exists")
@@ -16,22 +14,20 @@ def init_db():
 		print(row)
 	conn.close()
 
+def add_users(nom_perso="",nom_joueur="",role=""):
+	info=(nom_perso,nom_joueur,role)
+	conn = sqlite3.connect('pf.db')
+	c=conn.cursor()
+	c.execute("INSERT INTO joueurs VALUES(?,?,?)",info)
+	conn.close()
 
-#
-# conn = sqlite3.connect('test.db')
-# c = conn.cursor()
-#
-# c.execute("INSERT INTO test VALUES('tata','toto',10,12)")
-# conn.commit()
-# conn.close()
-#
-# conn=sqlite3.connect('test.db')
-# c=conn.cursor()
-# c.execute("select * from test")
-# while (1):
-# 	toto = c.fetchone()
-# 	if toto is not None:
-# 		print(toto)
-# 	else:
-# 		break
-# conn.close()
+def get_player(nom_perso):
+	conn = sqlite3.connect('pf.db')
+	c=conn.cursor()
+	np=(nom_perso,)
+	# c.execute("SELECT * FROM joueurs WHERE nom_perso=?",nom_perso)
+	for row in conn.execute('SELECT * FROM joueurs WHERE nom_perso=?',np):
+		print(row)
+	conn.close()
+
+get_player('earlinde')
