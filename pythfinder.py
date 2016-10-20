@@ -130,13 +130,20 @@ class db:
             print("did not create : table stuff_perso already exists")
         conn.close()
 
-    def add_user(nom_perso="empty",nom_joueur="nobody",role="useless",f=10,dex=10,con=10,inte=10,sag=10,cha=10):
+    def add_user(nom_perso="empty",nom_joueur="nobody",role="useless"):
         info=(nom_perso,nom_joueur,role)
-        carac=(nom_perso,f,dex,con,inte,sag,cha)
         conn = sqlite3.connect('pf.db')
         c=conn.cursor()
         c.execute("INSERT INTO joueurs VALUES(?,?,?)",info)
-        c.execute("INSERT INTO carac_perso VALUES(?,?,?,?,?,?,?)",carac)
+        conn.commit()
+        conn.close()
+
+#TODO : ajouter race avec race_id
+    def add_perso(nom_perso="empty",f=10,dex=10,con=10,inte=10,sag=10,cha=10):
+        carac = (nom_perso, f, dex, con, inte, sag, cha)
+        conn = sqlite3.connect('pf.db')
+        c = conn.cursor()
+        c.execute("INSERT INTO carac_perso VALUES(?,?,?,?,?,?,?)", carac)
         conn.commit()
         conn.close()
 
@@ -168,16 +175,45 @@ class db:
 def shell():
     print("pythfinder shell, enter command (help)")
     while 1:
-        comm=input("~> ")
-        if comm == "help":
+        comm=str(input("~> ")).split()
+        if comm[0] == "help":
             print("It works !")
-        elif comm == "exit":
+        elif comm[0] == "add_user":
+            if len(comm) is not 4:
+                print("error with arguments (usage : "+comm[0]+" <character name> <username> <role>")
+            else:
+                try:
+                    db.add_user(comm[1],comm[2],comm[3])
+                except sqlite3.DatabaseError:
+                    print("could not add user to database !")
+
+        elif comm[0] == "add_perso":
+            if len(comm) is not 9:
+                print("error with arguments (usage : " + comm[0] + " <nom_perso> <race> <force> <dexterite> <constitution> <intelligence> <sagesse> <charisme>")
+            else:
+                try:
+                    #TODO prendre race en compte
+                    db.add_perso(comm[1],comm[3],comm[4],comm[5],comm[6],comm[7],comm[8])
+                except sqlite3.DatabaseError:
+                    print("could not add character to database !")
+
+        elif comm[0] == "init_db":
+            db.init_db()
+
+        elif comm[0] == "get_carac":
+            if len(comm) is not 2:
+                print("error with arguments (usage : " + comm[0] + " <nom_perso>")
+            else:
+                db.get_carac(comm[1])
+
+        elif comm[0] == "exit":
             print("Exiting pythfinder shell...")
             break
 
 
 db.init_db()
-db.add_user('fafa','lolo','testeur',12,10,20,3,2,6)
+db.add_user('fafa','lolo','testeur')
+db.add_perso('fafa',12,10,20,3,2,6)
 db.get_carac('fafa')
 pj = perso("fonzie", 1,0,12,10,16,14,14,18,0,0,0)
 print(pj.name)
