@@ -91,7 +91,7 @@ class perso:
 		result=[]
 		while togo >= 0:
 			d=dice()
-			result.append(d.roll()+bonus-1)#magic number. It works.
+			result.append(d.roll()+bonus-1)#magic number yolo. It works.
 			togo-=6
 			bonus-=6
 		return result
