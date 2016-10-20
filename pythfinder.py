@@ -61,14 +61,14 @@ class perso:
 		self.armes = []
 		self.armures = []
 		self.stuff = []
-		if arme != None:
+		if arme is not None:
 			self.armes.append(arme)
-			if arme2 != None:
+			if arme2 is not None:
 				self.armes.append(arme)
-		if armure != None:
+		if armure is not None:
 			self.defenses[0]+=armure.value
 			self.armures.append(armure)
-			if armure2 != None:
+			if armure2 is not None:
 				self.defenses[0]+=armure2.value
 				self.armures.append(armure2)
 	#ajouter arme
@@ -124,7 +124,7 @@ class db:
 		except sqlite3.DatabaseError:
 			print("did not create : table carac_perso already exists")
 		try:
-			c.execute("CREATE table stuff_perso(nom_perso text, for real, dex real, con real, int real, sag real, cha real)")
+			c.execute("CREATE table stuff_perso(nom_perso text, type_objet text,nombre_objet real)")
 			conn.commit()
 		except sqlite3.DatabaseError:
 			print("did not create : table stuff_perso already exists")
@@ -165,6 +165,16 @@ class db:
 		conn.close()
 
 
+def shell():
+	print("pythfinder shell, enter command (help)")
+	while 1:
+		comm=input("~> ")
+		if comm == "help":
+			print("It works !")
+		elif comm == "exit":
+			print("Exiting pythfinder shell")
+			break
+
 
 db.init_db()
 db.add_user('fafa','lolo','testeur',12,10,20,3,2,6)
@@ -174,3 +184,4 @@ print(pj.name)
 print("force : "+str(pj.stats[0]))
 attack = pj.atk(arme())
 print("jet d'attaque : " + str(attack))
+shell()
