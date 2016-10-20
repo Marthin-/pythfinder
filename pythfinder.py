@@ -41,9 +41,9 @@ class stuff:
 class perso:
 
 # init
-    def __init__(self, name,mbba=0, mlvl=1,forc=10,dex=10,con=10,inte=10,sag=10,cha=10,vig=0,ref=0,vol=0,arme=None,arme2=None,armure=None,armure2=None):
-        self.name = name
-        self.stats = [forc,dex,con,inte,sag,cha]
+	def __init__(self, name,mbba=0, mlvl=1,forc=10,dex=10,con=10,inte=10,sag=10,cha=10,vig=0,ref=0,vol=0,arme=None,arme2=None,armure=None,armure2=None):
+		self.name = name
+		self.stats = [forc,dex,con,inte,sag,cha]
 		self.stats_mod = [0,0,0,0,0,0]
 		self.lvl = mlvl
 		self.bba = mbba
@@ -63,29 +63,29 @@ class perso:
 				self.defenses[0]+=armure2.value
 				self.armures.append(armure2)
 #ajouter arme
-	def add_armes(self,arme):
-		self.armes.append(arme)
+def add_armes(self,arme):
+	self.armes.append(arme)
 #ajouter armure
-	def add_armure(self,armure):
-		self.armures.append(armure)
+def add_armure(self,armure):
+	self.armures.append(armure)
 #calculer et lancer jet d'attaque
-    def atk(self,mode,arme,other):
-        bonus=self.bba
-		togo = bonus
-		if mode == 0 :#pas de don
-			bonus+=self.stats[0]+self.stats_mod[0]
-		elif mode == 1 :#attaque en puissance
-			bonus+=(arme.main / 2) * (self.stats[0] + self.stats_mod[0]) - (self.bba / 4)
-		elif mode == 2 :#distance/attaque en finesse
-			bonus+=self.stats[1]+self.stats_mod[1]
-		bonus+=other
-		result=[]
-		while togo >= 0:
-			result.append(dice.roll()+bonus)
-			togo-=6
-			bonus-=6
-		return result
-#résoudre défense
+def atk(self,mode,arme,other):
+	bonus=self.bba
+	togo = bonus
+	if mode == 0 :#pas de don
+		bonus+=self.stats[0]+self.stats_mod[0]
+	elif mode == 1 :#attaque en puissance
+		bonus+=(arme.main / 2) * (self.stats[0] + self.stats_mod[0]) - (self.bba / 4)
+	elif mode == 2 :#distance/attaque en finesse
+		bonus+=self.stats[1]+self.stats_mod[1]
+	bonus+=other
+	result=[]
+	while togo >= 0:
+		result.append(dice.roll()+bonus)
+		togo-=6
+		bonus-=6
+	return result
+# resoudre defense
 	def defense(self,test=0):#test : place dans tableau defenses
 		if test == 0:
 			return self.defenses[0]
@@ -98,7 +98,7 @@ class perso:
 
 
 ####################### INITIALISE GAME DATABASE ###########################
-classe db:
+class db:
 	def init_db():
 		conn = sqlite3.connect('pf.db')
 		c=conn.cursor()
@@ -150,3 +150,4 @@ db.add_user('fafa','lolo','testeur',12,10,20,3,2,6)
 db.get_carac('fafa')
 pj = perso("fonzie", 1,0,12,10,16,14,14,18,0,0,0)
 print(pj.name)
+print("force : "+str(pj.stats[0]))
