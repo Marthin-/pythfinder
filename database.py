@@ -29,13 +29,16 @@ class Database:
         c.execute("INSERT INTO joueurs (nom_joueur, nom_perso, role) VALUES(?,?,?)", info)
         conn.commit()
 
-    # TODO : ajouter race avec race_id
-    def add_perso(self, nom_perso="empty", f=10, dex=10, con=10, inte=10, sag=10, cha=10):
-        carac = (nom_perso, f, dex, con, inte, sag, cha)
+    def add_perso(self, nom_perso="empty", f=10, dex=10, con=10, inte=10, sag=10, cha=10, race="Nain"):
 
         c = self.db.cursor()
-        c.execute("INSERT INTO perso ( nom_perso, force, dexterite, constitution, intelligence, sagesse, charisme)"
-                  " VALUES(?,?,?,?,?,?,?)", carac)
+        race_id = int(c.execute('SELECT race_id FROM race WHERE nom=?', (race, )).fetchone()[0])
+
+        carac = (nom_perso, f, dex, con, inte, sag, cha, race_id)
+
+        c.execute("INSERT INTO perso "
+                  "( nom_perso, force, dexterite, constitution, intelligence, sagesse, charisme, race)"
+                  " VALUES(?,?,?,?,?,?,?,?)", carac)
         self.db.commit()
 
     def add_stuff(self, nom_perso="empty", categorie="stuff", nom="empty"):
@@ -57,7 +60,6 @@ class Database:
         np = (nom_perso,)
         for row in conn.execute('SELECT * FROM perso WHERE nom_perso=?', np):
             print(row)
-        conn.close()
 
     def get_db(self):
         """ May be usefull for tests"""
