@@ -58,7 +58,7 @@ class Database:
         conn = self.db
 
         np = (nom_perso,)
-        for row in conn.execute('SELECT * FROM perso WHERE nom_perso=?', np):
+        for row in conn.execute('SELECT * FROM perso INNER JOIN race ON race.race_id=perso.race WHERE nom_perso=?', np):
             print(row)
 
     def get_db(self):
