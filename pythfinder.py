@@ -122,7 +122,8 @@ class perso:
 def shell():
     print("pythfinder shell, enter command (help)")
     while 1:
-        comm=str(input("~> ")).split()
+        rawComm = str(input("~> "))
+        comm = rawComm.split()
         if comm[0] == "help":
             print("It works !")
         elif comm[0] == "add_user":
@@ -153,6 +154,12 @@ def shell():
                 print("error with arguments (usage : " + comm[0] + " <nom_perso>")
             else:
                 db.get_carac(comm[1])
+        elif comm[0] == "atk":
+            if len(comm) > 5:
+                print("error with arguments : usage : atk -p=<perso> -a=<arme> -m=<mode> -b=<bonus/malus>")
+            else:
+                print("en cours d'implé")
+                print("perso : %s, arme : %s, mode : %s, bonus : %s" %(comm[1],comm[2],comm[3],comm[4],))
 
         elif comm[0] == "exit":
             print("Exiting pythfinder shell...")
