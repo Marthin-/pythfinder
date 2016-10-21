@@ -171,13 +171,30 @@ class db:
             print(row)
         conn.close()
 
+    # def save_perso(nom_joueur,nom_perso):
+    #     tab=(nom_joueur,nom_perso,)
+    #     tab2=(nom_joueur,nom_perso,"N/A",)
+    #     conn=sqlite3.connect('pf.db')
+    #     c=conn.cursor()
+    #
+    #     if c.execute("SELECT * FROM joueurs WHERE nom_joueur=? AND nom_perso=?",tab) is None:
+    #         c.execute("INSERT INTO joueurs VALUES(?,?,?",tab2)
+    #     else:
+    #         c.execute("UPDATE joueurs SET nom_perso=?,nom_joueur=?",tab)
+    #     #TODO finir
+    #     if c.execute("SELECT nom_perso FROM perso WHERE nom_perso=?",(nom_perso,)) is None
+    #         c.execute("INSERT INTO joueurs")
 
-def shell():
+def shell_main():
     print("pythfinder shell, enter command (help)")
     while 1:
         comm=str(input("~> ")).split()
         if comm[0] == "help":
-            print("It works !")
+            print("Ajouter utilisateur........................add_user <nom perso> <nom utilisateur> <role>")
+            print("Ajouter personnage........... add_perso <nom> <race> <for> <dex> <con> <int> <sag> <cha>")
+            print("Voir carac personnage....................................................get_carac <nom>")
+            print("Charger base de données..........................................................init_db")
+            print("Terminer shell......................................................................exit")
         elif comm[0] == "add_user":
             if len(comm) is not 4:
                 print("error with arguments (usage : "+comm[0]+" <character name> <username> <role>")
@@ -210,14 +227,17 @@ def shell():
             print("Exiting pythfinder shell...")
             break
 
+        else:
+            print("Mauvaise commande (help)")
 
-db.init_db()
-db.add_user('fafa','lolo','testeur')
-db.add_perso('fafa',12,10,20,3,2,6)
-db.get_carac('fafa')
+# db.init_db() #done
+# db.add_user('fafa','lolo','testeur') #done
+# db.add_perso('fafa',12,10,20,3,2,6) #done
+# db.get_carac('fafa') #done
 pj = perso("fonzie", 1,0,12,10,16,14,14,18,0,0,0)
 print(pj.name)
+
 print("force : "+str(pj.stats[0]))
 attack = pj.atk(arme())
 print("jet d'attaque : " + str(attack))
-shell()
+shell_main()
