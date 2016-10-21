@@ -21,7 +21,7 @@ create table perso (
   intelligence integer,
   sagesse integer,
   charisme integer,
-  FOREIGN KEY(race) REFERENCES race(race_id)
+FOREIGN KEY(race) REFERENCES race(race_id)
  );
 
 create table race (
