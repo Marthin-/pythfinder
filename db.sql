@@ -32,6 +32,7 @@ create table race (
 create table arme_perso (
   arme_id integer,
   perso_id integer,
+  munition integer,
   FOREIGN KEY(perso_id) REFERENCES perso(perso_id)
   FOREIGN KEY(arme_id) REFERENCES arme(arme_id)
 );
@@ -42,6 +43,5 @@ create table arme (
   base_degats integer not null,
   mult_degats integer,
   mod_degat text,
-  porte integer,
-  munition integer
+  porte text
 );

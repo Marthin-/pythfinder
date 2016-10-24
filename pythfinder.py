@@ -165,13 +165,17 @@ def shell():
             print("Exiting pythfinder shell...")
             break
 
-db = Database(True)
-db.add_user('fafa','lolo','testeur')
-db.add_perso('fafa',12,10,20,3,2,6)
-db.get_carac('fafa')
-pj = perso("fonzie", 1,0,12,10,16,14,14,18,0,0,0)
-print(pj.name)
-print("force : "+str(pj.stats[0]))
-attack = pj.atk(arme())
-print("jet d'attaque : " + str(attack))
-shell()
+if __name__ == '__main__':
+    print("start")
+    db = Database(True)
+    db.update_weapons()
+
+    db.add_user('fafa','lolo','testeur')
+    db.add_perso('fafa',12,10,20,3,2,6)
+    db.get_carac('fafa')
+    pj = perso("fonzie", 1,0,12,10,16,14,14,18,0,0,0)
+    print(pj.name)
+    print("force : "+str(pj.stats[0]))
+    attack = pj.atk(arme())
+    print("jet d'attaque : " + str(attack))
+    shell()

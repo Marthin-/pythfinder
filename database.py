@@ -64,3 +64,36 @@ class Database:
     def get_db(self):
         """ May be usefull for tests"""
         return self.db
+
+    def update_weapons(self):
+        from bs4 import BeautifulSoup
+        import requests
+
+        def insert_arm_in_db(data):
+            conn = self.db
+            c = conn.cursor()
+            tmp = data[3].split('d')
+
+            if len(tmp) == 1:  # ammunition
+                tmp = [0, 0]
+            else:  # hack for staff
+                tmp = [tmp[0], tmp[1].split('/')[0]]
+
+            c.execute("INSERT INTO arme(nom_arme, base_degats, mult_degats, mod_degat, porte)"
+                      "VALUES (?, ?, ?, ?, ?)", (data[0], tmp[1], tmp[0], data[4], data[5] ))
+            conn.commit()
+
+        page = requests.get(
+            'http://www.pathfinder-fr.org/Wiki/Pathfinder-RPG.Tableau%20r%c3%a9capitulatif%20des%20armes.ashx')
+        soup = BeautifulSoup(page.content, 'html.parser')
+
+        for elem in soup.find_all('table', class_='tablo'):
+            for entry in elem.find_all('tr'):
+
+                col = entry.find_all('td')
+                col = [ele.text.strip() for ele in col]
+
+                if len(col) == 9 and col[1] != "Prix":
+                    insert_arm_in_db(col)
+
+        print("Successfully import weapons")
