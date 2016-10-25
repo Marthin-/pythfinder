@@ -80,7 +80,7 @@ class Database:
                 tmp = [tmp[0], tmp[1].split('/')[0]]
 
             c.execute("INSERT INTO arme(nom_arme, base_degats, mult_degats, mod_degat, porte)"
-                      "VALUES (?, ?, ?, ?, ?)", (data[0], tmp[1], tmp[0], data[4], data[5] ))
+                      "VALUES (?, ?, ?, ?, ?)", (data[0], tmp[1], tmp[0], data[4], data[5]))
             conn.commit()
 
         page = requests.get(
@@ -97,3 +97,34 @@ class Database:
                     insert_arm_in_db(col)
 
         print("Successfully import weapons")
+
+    def update_armors(self):
+        from bs4 import BeautifulSoup
+        import requests
+
+        def insert_arm_in_db(data):
+            conn = self.db
+            c = conn.cursor()
+            data[2] = data[2][1] if len(data[2]) == 2 else '0'
+            data[3] = data[3][1] if len(data[3]) == 2 else '0'
+            data[4] = data[4][1] if len(data[4]) == 2 else '0'
+            data[5] = data[5].split('%')[0]
+
+            c.execute("INSERT INTO armure(nom_armure, bonus_armure, bonus_max_dex, malus_test, echec_sort)"
+                      "VALUES (?, ?, ?, ?, ?)", (data[0], data[2], data[3], data[4], data[5]))
+            conn.commit()
+
+        page = requests.get(
+            'http://www.pathfinder-fr.org/Wiki/Pathfinder-RPG.Tableau%20r%c3%a9capitulatif%20des%20armures.ashx')
+        soup = BeautifulSoup(page.content, 'html.parser')
+
+        for elem in soup.find_all('table', class_='tablo'):
+            for entry in elem.find_all('tr'):
+
+                col = entry.find_all('td')
+                col = [ele.text.strip() for ele in col]
+
+                if len(col) == 10:  # and col[1] != "Prix":
+                    insert_arm_in_db(col)
+
+        print("Successfully import armors")

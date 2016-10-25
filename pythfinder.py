@@ -169,6 +169,7 @@ if __name__ == '__main__':
     print("start")
     db = Database(True)
     db.update_weapons()
+    db.update_armors()
 
     db.add_user('fafa','lolo','testeur')
     db.add_perso('fafa',12,10,20,3,2,6)
@@ -178,4 +179,4 @@ if __name__ == '__main__':
     print("force : "+str(pj.stats[0]))
     attack = pj.atk(arme())
     print("jet d'attaque : " + str(attack))
-    shell()
+    # shell()
