@@ -28,6 +28,7 @@ class dice:
 
 
 ############## CLASSE ARME ###########
+#TODO : Initialiser les armes en fonction de leur ID avec lecture dans la DB (plus simple)
 class arme:
     def __init__(self, damage=6, nbd=1, crit=20, critmul=2, nom="epee", main=1):
         self.name = nom
@@ -37,21 +38,21 @@ class arme:
         self.crit_mul = critmul
         self.main = main + 1
 
-
 ############# CLASSE ÉQUIPÉ (OBJETS PORTÉS) ############
+#TODO : A modifier : Utiliser un dictionnaire avec les ID des différents objets à chaque emplacement
 class Equipe:
-    def __init__self(self, md, armure, mg, tete, front, yeux, epaules, corps, torse, poignets, anneau1, anneau2, cou,
-                     taille, pieds):
+    def __init__(self, md=0, armor=0, mg=0, tete=0, front=0, yeux=0, epaules=0,corps=0, torse=0, poignets=0, anneau1=0, anneau2=0, cou=0, taille=0, pieds=0):
         # dictionnaire du stuff équipé
-        self.slot = {'tete': tete, 'front': front, 'yeux': yeux,
-                     'epaules': epaules, 'corps': corps, 'torse': torse,
-                     'poignets': poignets, 'mg': mg, 'md': md,
-                     'anneau1': anneau1, 'anneau2': anneau2, 'armure': armure,
-                     'cou': cou, 'taille': taille, 'pieds': pieds}
+        self.slot = {'tete': tete, 'front': front, 'yeux': yeux, 'epaules': epaules, 'corps': corps, 'torse': torse, 'poignets': poignets, 'mg': mg, 'md': md, 'anneau1': anneau1, 'anneau2': anneau2, 'armure': armor, 'cou': cou, 'taille': taille, 'pieds': pieds}
 
     def set_item(self, place, stuff):
         self.slot[place] = stuff
 
+    def print_item(self,place):
+        print(self.slot[place])
+
+    def print_all_equiped(self):
+        print(self.slot.values())
 
 ############# CLASSE ARMURE ##########
 class armure:
@@ -70,11 +71,12 @@ class stuff:
 ############# CLASSE PERSONNAGE #############
 class perso:
     # init
-    def __init__(self, name, mbba=0, mlvl=1,
+    def __init__(self, name, race,equip, mlvl=1, mbba=0,
                  forc=10, dex=10, con=10, inte=10, sag=10, cha=10,
                  vig=0, ref=0, vol=0,
                  arme=None, arme2=None, armure=None, armure2=None):
         self.name = name
+        self.race = race
         self.stats = [forc, dex, con, inte, sag, cha]
         self.stats_mod = [0, 0, 0, 0, 0, 0]
         self.lvl = mlvl
@@ -84,7 +86,7 @@ class perso:
         self.armes = []
         self.armures = []
         self.stuff = []
-        self.equipement = Equipe()
+        self.equipement = equip
 
         if arme is not None:
             self.armes.append(arme)
@@ -166,7 +168,7 @@ def shell():
 
         elif comm[0] == "init_db":
             pass
-            # db.init_db()
+            db.init_db()
 
         elif comm[0] == "get_carac":
             if len(comm) is not 2:
@@ -186,15 +188,18 @@ def shell():
 
 
 if __name__ == '__main__':
-    print("start")
+    print("Welcome to Pythfinder <3")
     db = Database(True)
     db.update_weapons()
+    db.update_armors()
 
+#TODO : créer fonction db.save_perso(self, perso) et db.load_perso(self,nom_perso,perso_dest) pour charger/sauver des profils dans la db
     db.add_user('fafa', 'lolo', 'testeur')
     db.add_perso('fafa', 12, 10, 20, 3, 2, 6)
     db.get_carac('fafa')
-    pj = perso("fonzie", 1, 0, 12, 10, 16, 14, 14, 18, 0, 0, 0)
-    pj.equipement=Equipe(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,0,0,0,0)
+    stuff = Equipe()
+    pj = perso("fonzie", "nain", stuff, 1, 0, 12, 10, 16, 14, 14, 18, 0, 0, 0)
+    pj.equipement = stuff
     print(pj.name)
     print("force : " + str(pj.stats[0]))
     attack = pj.atk(arme())
