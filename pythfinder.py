@@ -30,13 +30,23 @@ class dice:
 ############## CLASSE ARME ###########
 #TODO : Initialiser les armes en fonction de leur ID avec lecture dans la DB (plus simple)
 class arme:
-    def __init__(self, damage=6, nbd=1, crit=20, critmul=2, nom="epee", main=1):
-        self.name = nom
-        self.damage = damage
-        self.nb_dice = nbd
-        self.crit = crit
-        self.crit_mul = critmul
-        self.main = main + 1
+    def __init__(self, w_id=0):
+        #TODO : update quand il y a deux dés de dégâts (cimeterre à deux mains)
+        print("toto")
+        request = db.get_weapon(w_id)
+        crit_data = str(request[4]).split('/')
+        if len(crit_data) == 2:
+            zone = str(request[4]).split('/')[0] # split pour récupérer la zone de critique
+            mult = str(request[4]).split('/')[1] # split pour récupérer le multiplicateur de critique
+        else :
+            zone = 20
+            mult = crit_data[0]
+        self.name = request[1]
+        self.damage = request[2]
+        self.nb_dice = 1 #TODO pour le nb de dés
+        self.crit = zone
+        self.critmul = mult
+        self.hands = request[3] + 1 # It works. arme à deux mains ou à trois mains. Oui oui.
 
 ############# CLASSE ÉQUIPÉ (OBJETS PORTÉS) ############
 #TODO : A modifier : Utiliser un dictionnaire avec les ID des différents objets à chaque emplacement
@@ -114,7 +124,7 @@ class perso:
         if mode == 0:  # pas de don
             bonus += get_mod(self.stats[0] + self.stats_mod[0])
         elif mode == 1:  # attaque en puissance
-            bonus += (arme.main / 2) * (get_mod(self.stats[0] + self.stats_mod[0])) - (self.bba / 4)
+            bonus += (arme.hands / 2) * (get_mod(self.stats[0] + self.stats_mod[0])) - (self.bba / 4)
         elif mode == 2:  # distance/attaque en finesse
             bonus += get_mod(self.stats[1] + self.stats_mod[1])
         bonus += other
@@ -189,19 +199,24 @@ def shell():
 
 if __name__ == '__main__':
     print("Welcome to Pythfinder <3")
-    db = Database(True)
+    db = Database(False)
     db.update_weapons()
     db.update_armors()
-
 #TODO : créer fonction db.save_perso(self, perso) et db.load_perso(self,nom_perso,perso_dest) pour charger/sauver des profils dans la db
-    db.add_user('fafa', 'lolo', 'testeur')
-    db.add_perso('fafa', 12, 10, 20, 3, 2, 6)
-    db.get_carac('fafa')
-    stuff = Equipe()
-    pj = perso("fonzie", "nain", stuff, 1, 0, 12, 10, 16, 14, 14, 18, 0, 0, 0)
-    pj.equipement = stuff
-    print(pj.name)
-    print("force : " + str(pj.stats[0]))
-    attack = pj.atk(arme())
-    print("jet d'attaque : " + str(attack))
+
+    #pas mal de tests, décommenter en cas de debug
+    # db.add_user('fafa', 'lolo', 'testeur')
+    # db.add_perso('fafa', 12, 10, 20, 3, 2, 6)
+    # db.get_carac('fafa')
+    # stuff = Equipe()
+    # pj = perso("fonzie", "nain", stuff, 1, 0, 12, 10, 16, 14, 14, 18, 0, 0, 0)
+    # pj.equipement = stuff
+    # print(pj.name)
+    # print("force : " + str(pj.stats[0]))
+    # attack = pj.atk(arme(15))
+    # print("jet d'attaque : " + str(attack))
+    # db.get_weapon(15)
+    # uneArme = arme(15)
+    # print("test du morgenstern :")
+    # print(uneArme.name)
     shell()

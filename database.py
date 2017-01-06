@@ -66,6 +66,14 @@ class Database:
         """ May be usefull for tests"""
         return self.db
 
+    def get_weapon(self, w_id):
+        conn = self.db
+        arme_id = (w_id,)
+        print("getting weapon with id "+str(w_id))
+        c = conn.cursor()
+        c.execute('SELECT * FROM arme WHERE arme_id=?', arme_id)
+        return c.fetchone()
+
     def update_weapons(self):
         from bs4 import BeautifulSoup
         import requests
