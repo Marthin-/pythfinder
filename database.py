@@ -74,6 +74,14 @@ class Database:
         c.execute('SELECT * FROM arme WHERE arme_id=?', arme_id)
         return c.fetchone()
 
+    def get_armor(self,a_id):
+        conn = self.db
+        armor_id = (a_id,)
+        print("getting armor with id "+str(a_id))
+        c = conn.cursor()
+        c.execute('SELECT * FROM armure WHERE armure_id=?', armor_id)
+        return c.fetchone()
+
     def update_weapons(self):
         from bs4 import BeautifulSoup
         import requests

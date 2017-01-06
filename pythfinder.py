@@ -66,10 +66,14 @@ class Equipe:
 
 ############# CLASSE ARMURE ##########
 class armure:
-    def __init__(self, val=0, categorie=0):
-        self.categorie = categorie
-        self.value = val
-
+    #TODO : Ajouter un attribut "catégorie" pour limiter les ports d'armures (ex. mages)
+    def __init__(self, a_id):
+        request = db.get_armor(a_id)
+        self.name = request[1]
+        self.value = request[2]
+        self.max_dex = request[3]
+        self.malus_test = request[4]
+        self.echec_sort = request[5]
 
 ############# CLASSE STUFF (AUTRES OBJETS) #########
 class stuff:
@@ -80,7 +84,6 @@ class stuff:
 
 ############# CLASSE PERSONNAGE #############
 class perso:
-    # init
     def __init__(self, name, race,equip, mlvl=1, mbba=0,
                  forc=10, dex=10, con=10, inte=10, sag=10, cha=10,
                  vig=0, ref=0, vol=0,
@@ -199,9 +202,9 @@ def shell():
 
 if __name__ == '__main__':
     print("Welcome to Pythfinder <3")
-    db = Database(False)
-    db.update_weapons()
-    db.update_armors()
+    db = Database(False) # !! mettre à True pour drop toute la DB !!
+    #db.update_weapons()
+    #db.update_armors()
 #TODO : créer fonction db.save_perso(self, perso) et db.load_perso(self,nom_perso,perso_dest) pour charger/sauver des profils dans la db
 
     #pas mal de tests, décommenter en cas de debug
@@ -216,7 +219,10 @@ if __name__ == '__main__':
     # attack = pj.atk(arme(15))
     # print("jet d'attaque : " + str(attack))
     # db.get_weapon(15)
-    # uneArme = arme(15)
-    # print("test du morgenstern :")
-    # print(uneArme.name)
+    uneArme = arme(15)
+    print("test du morgenstern :")
+    print(uneArme.name)
+    uneArmure = armure(7)
+    print("Test de l'armure matelassée :")
+    print(uneArmure.name)
     shell()
