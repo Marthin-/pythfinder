@@ -120,6 +120,12 @@ class perso:
     def add_armure(self, armure):
         self.armures.append(armure)
 
+    def jet_comp(self, comp):
+        print("Se préparer à attaquer la partie longue...")
+        #penser au mod. Dex limité par l'armure
+        #et au malus d'armure
+
+
     # calculer et lancer jet d'attaque
     def atk(self, arme, mode=0, other=0):
         bonus = self.bba
@@ -139,17 +145,17 @@ class perso:
             bonus -= 6
         return result
 
-        # resoudre defense
-        def defense(self, test=0):  # test : place dans tableau defenses
-            d = dice()
-            if test == 0:
-                return self.defenses[0]
-            elif test == 1:
-                return d.roll() + get_mod(self.defenses[test] + self.stats[1])
-            elif test == 2:
-                return d.roll() + get_mod(self.defenses[test] + self.stats[2])
-            elif test == 3:
-                return d.roll() + get_mod(self.defenses[test] + self.stats[4])
+    # resoudre defense
+    def defense(self, test=0):  # test : place dans tableau defenses
+        d = dice()
+        if test == 0:
+            return self.defenses[0]
+        elif test == 1:
+            return d.roll() + get_mod(self.defenses[test] + self.stats[1])
+        elif test == 2:
+            return d.roll() + get_mod(self.defenses[test] + self.stats[2])
+        elif test == 3:
+            return d.roll() + get_mod(self.defenses[test] + self.stats[4])
 
 
 def shell():

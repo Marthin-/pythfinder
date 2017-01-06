@@ -11,7 +11,6 @@ __Utilitaire en python pour porter le système de Pathfinder sur PC et automatis
 * Implé jets de compétences [ __x__]
 * Implé montée de niveau [ __x__]
 * GUI [ __x__]
-* Sauvegarde de la DB pour jeu hors-ligne
 * Plein d'autres trucs [ __x__]
 
 ## Étape 2 : jeu en ligne
