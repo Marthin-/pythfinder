@@ -11,7 +11,7 @@ def get_mod(val):
 
 
 ##############CLASSE DE##############
-class dice:
+class Dice:
     def __init__(self, value=20, crit=20):
         self.value = value
         self.crit = crit
@@ -27,9 +27,20 @@ class dice:
         return r
 
 
+############## CLASSE ITEM ###########
+
+#TODO Classe Item dont héritent les armes, armures et stuff
+#Avec une méthode create_item() pour ajouter les items à la DB correspondante
+
+class Item:
+    def __init__(self, i_id=0):
+        print("Work in progress")
+        self.i_id = i_id
+        self.place = "tete" #TODO à ajuster hein
+        #TODO "interface" pour relier un Item à une table de la DB (arme, armure, collier, gants...)
+
 ############## CLASSE ARME ###########
-#TODO : Initialiser les armes en fonction de leur ID avec lecture dans la DB (plus simple)
-class arme:
+class Arme():
     def __init__(self, w_id=0):
         #TODO : update quand il y a deux dés de dégâts (cimeterre à deux mains)
         print("toto")
@@ -55,8 +66,8 @@ class Equipe:
         # dictionnaire du stuff équipé
         self.slot = {'tete': tete, 'front': front, 'yeux': yeux, 'epaules': epaules, 'corps': corps, 'torse': torse, 'poignets': poignets, 'mg': mg, 'md': md, 'anneau1': anneau1, 'anneau2': anneau2, 'armure': armor, 'cou': cou, 'taille': taille, 'pieds': pieds}
 
-    def set_item(self, place, stuff):
-        self.slot[place] = stuff
+    def set_item(self, place, i_id):
+        self.slot[place] = i_id
 
     def print_item(self,place):
         print(self.slot[place])
@@ -65,7 +76,7 @@ class Equipe:
         print(self.slot.values())
 
 ############# CLASSE ARMURE ##########
-class armure:
+class Armure:
     #TODO : Ajouter un attribut "catégorie" pour limiter les ports d'armures (ex. mages)
     def __init__(self, a_id):
         request = db.get_armor(a_id)
@@ -76,18 +87,18 @@ class armure:
         self.echec_sort = request[5]
 
 ############# CLASSE STUFF (AUTRES OBJETS) #########
-class stuff:
+#TODO bientôt déprecié
+class Stuff:
     def __init__(self, car_mod=None, val=0):
         self.car_mod = car_mod
         self.value = val
 
 
 ############# CLASSE PERSONNAGE #############
-class perso:
+class Perso:
     def __init__(self, name, race,equip, mlvl=1, mbba=0,
                  forc=10, dex=10, con=10, inte=10, sag=10, cha=10,
-                 vig=0, ref=0, vol=0,
-                 arme=None, arme2=None, armure=None, armure2=None):
+                 vig=0, ref=0, vol=0):
         self.name = name
         self.race = race
         self.stats = [forc, dex, con, inte, sag, cha]
@@ -96,29 +107,26 @@ class perso:
         self.bba = mbba
         self.dons = []
         self.defenses = [10, 0, 0, 0]  # CA, ref, vig, vol
-        self.armes = []
-        self.armures = []
         self.stuff = []
         self.equipement = equip
+        self.sac = []
 
-        if arme is not None:
-            self.armes.append(arme)
-            if arme2 is not None:
-                self.armes.append(arme)
-        if armure is not None:
-            self.defenses[0] += armure.value
-            self.armures.append(armure)
-            if armure2 is not None:
-                self.defenses[0] += armure2.value
-                self.armures.append(armure2)
+    #ajouter un objet au sac
+    def add_sac(self,item_id):
+        self.sac.append(item_id)
 
-    # ajouter arme
-    def add_armes(self, arme):
-        self.armes.append(arme)
+    def wear(self,objet):
+        possede = False
+        for i in range(0,len(self.sac)):
+            if objet.i_id == self.sac[i]:
+                possede = True
+        if possede is False:
+            print("vous ne pouvez pas équiper un objet sans le posséder !")
+            return -1
+        else:
+            self.equipement.set_item(objet.place, objet.i_id)
 
-    # ajouter armure
-    def add_armure(self, armure):
-        self.armures.append(armure)
+
 
     def jet_comp(self, comp):
         print("Se préparer à attaquer la partie longue...")
@@ -139,7 +147,7 @@ class perso:
         bonus += other
         result = []
         while togo >= 0:
-            d = dice()
+            d = Dice()
             result.append(d.roll() + bonus - 1)  # magic number yolo. It works.
             togo -= 6
             bonus -= 6
@@ -147,7 +155,7 @@ class perso:
 
     # resoudre defense
     def defense(self, test=0):  # test : place dans tableau defenses
-        d = dice()
+        d = Dice()
         if test == 0:
             return self.defenses[0]
         elif test == 1:
@@ -164,7 +172,9 @@ def shell():
         rawComm = str(input("~> "))
         comm = rawComm.split()
         if comm[0] == "help":
-            print("It works !")
+            print("add_user <char name> <username> <role>")
+            print("add_perso <race> <force> <dex> <const> <int> <sag> <cha>")
+            print("get_carac <nom perso>")
         elif comm[0] == "add_user":
             if len(comm) is not 4:
                 print("error with arguments (usage : " + comm[0] + " <character name> <username> <role>")
@@ -176,18 +186,13 @@ def shell():
 
         elif comm[0] == "add_perso":
             if len(comm) is not 9:
-                print("error with arguments (usage : " + comm[
-                    0] + " <nom_perso> <race> <force> <dexterite> <constitution> <intelligence> <sagesse> <charisme>")
+                print("error with arguments (usage : " + comm[0] + " <nom_perso> <race> <force> <dexterite> <constitution> <intelligence> <sagesse> <charisme>")
             else:
                 try:
                     # TODO prendre race en compte
                     db.add_perso(comm[1], comm[3], comm[4], comm[5], comm[6], comm[7], comm[8])
                 except sqlite3.DatabaseError:
                     print("could not add character to database !")
-
-        elif comm[0] == "init_db":
-            pass
-            db.init_db()
 
         elif comm[0] == "get_carac":
             if len(comm) is not 2:
@@ -218,17 +223,17 @@ if __name__ == '__main__':
     # db.add_perso('fafa', 12, 10, 20, 3, 2, 6)
     # db.get_carac('fafa')
     # stuff = Equipe()
-    # pj = perso("fonzie", "nain", stuff, 1, 0, 12, 10, 16, 14, 14, 18, 0, 0, 0)
+    # pj = Perso("fonzie", "nain", stuff, 1, 0, 12, 10, 16, 14, 14, 18, 0, 0, 0)
     # pj.equipement = stuff
     # print(pj.name)
     # print("force : " + str(pj.stats[0]))
-    # attack = pj.atk(arme(15))
+    # attack = pj.atk(Arme(15))
     # print("jet d'attaque : " + str(attack))
     # db.get_weapon(15)
-    uneArme = arme(15)
+    uneArme = Arme(15)
     print("test du morgenstern :")
     print(uneArme.name)
-    uneArmure = armure(7)
+    uneArmure = Armure(7)
     print("Test de l'armure matelassée :")
     print(uneArmure.name)
     shell()

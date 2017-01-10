@@ -4,6 +4,16 @@ import sqlite3
 class Database:
 #TODO possibilité de rajouter des objets à la DB (ex. Armes magiques) : En entrant les dégâts, le type d'arme, et les effets supplémentaires.
 #TODO (Je le met ici pour penser à modifier un peu le code de la gestion de DB pour ne pas effacer à chaque fois les objets "personnalisés")
+
+#TODO aussi : recycler le script de récup sur les liens suivants :
+#http://www.pathfinder-fr.org/Wiki/Pathfinder-RPG.Armures%20magiques.ashx
+#http://www.pathfinder-fr.org/Wiki/Pathfinder-RPG.Armes%20magiques.ashx
+#http://www.pathfinder-fr.org/Wiki/Pathfinder-RPG.Anneaux%20magiques.ashx
+#http://www.pathfinder-fr.org/Wiki/Pathfinder-RPG.Sceptres%20magiques.ashx
+#http://www.pathfinder-fr.org/Wiki/Pathfinder-RPG.B%c3%a2tons%20magiques.ashx
+#http://www.pathfinder-fr.org/Wiki/Pathfinder-RPG.Objets%20merveilleux.ashx
+
+
     def __init__(self, reset=True, db_filname="pf.db"):
         self.db = sqlite3.connect(db_filname)
 
