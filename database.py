@@ -40,6 +40,7 @@ class Database:
         c.execute("INSERT INTO joueurs (nom_joueur, nom_perso, role) VALUES(?,?,?)", info)
         conn.commit()
 
+    #TODO améliorer
     def add_perso(self, nom_perso="empty", f=10, dex=10, con=10, inte=10, sag=10, cha=10, race="Nain"):
 
         c = self.db.cursor()

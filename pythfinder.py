@@ -99,6 +99,7 @@ class Perso:
     def __init__(self, name, race,equip, mlvl=1, mbba=0,
                  forc=10, dex=10, con=10, inte=10, sag=10, cha=10,
                  vig=0, ref=0, vol=0):
+        #TODO : demander si perso à charger depuis DB ou si nouveau perso
         self.name = name
         self.race = race
         self.stats = [forc, dex, con, inte, sag, cha]
@@ -106,7 +107,7 @@ class Perso:
         self.lvl = mlvl
         self.bba = mbba
         self.dons = []
-        self.defenses = [10, 0, 0, 0]  # CA, ref, vig, vol
+        self.defenses = [10, ref, vig, vol]  # CA, ref, vig, vol
         self.stuff = []
         self.equipement = equip
         self.sac = []
