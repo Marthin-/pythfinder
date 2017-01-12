@@ -2,17 +2,18 @@ import sqlite3
 
 
 class Database:
-#TODO possibilité de rajouter des objets à la DB (ex. Armes magiques) : En entrant les dégâts, le type d'arme, et les effets supplémentaires.
-#TODO (Je le met ici pour penser à modifier un peu le code de la gestion de DB pour ne pas effacer à chaque fois les objets "personnalisés")
+    # TODO: possibilité de rajouter des objets à la DB (ex. Armes magiques) : En entrant les dégâts, le type d'arme,
+    # TODO et les effets supplémentaires.
+    # TODO (Je le met ici pour penser à modifier un peu le code de la gestion de DB pour ne pas effacer à chaque fois
+    # TODO les objets "personnalisés")
 
-#TODO aussi : recycler le script de récup sur les liens suivants :
-#http://www.pathfinder-fr.org/Wiki/Pathfinder-RPG.Armures%20magiques.ashx
-#http://www.pathfinder-fr.org/Wiki/Pathfinder-RPG.Armes%20magiques.ashx
-#http://www.pathfinder-fr.org/Wiki/Pathfinder-RPG.Anneaux%20magiques.ashx
-#http://www.pathfinder-fr.org/Wiki/Pathfinder-RPG.Sceptres%20magiques.ashx
-#http://www.pathfinder-fr.org/Wiki/Pathfinder-RPG.B%c3%a2tons%20magiques.ashx
-#http://www.pathfinder-fr.org/Wiki/Pathfinder-RPG.Objets%20merveilleux.ashx
-
+    # TODO aussi : recycler le script de récup sur les liens suivants :
+    # http://www.pathfinder-fr.org/Wiki/Pathfinder-RPG.Armures%20magiques.ashx
+    # http://www.pathfinder-fr.org/Wiki/Pathfinder-RPG.Armes%20magiques.ashx
+    # http://www.pathfinder-fr.org/Wiki/Pathfinder-RPG.Anneaux%20magiques.ashx
+    # http://www.pathfinder-fr.org/Wiki/Pathfinder-RPG.Sceptres%20magiques.ashx
+    # http://www.pathfinder-fr.org/Wiki/Pathfinder-RPG.B%c3%a2tons%20magiques.ashx
+    # http://www.pathfinder-fr.org/Wiki/Pathfinder-RPG.Objets%20merveilleux.ashx
 
     def __init__(self, reset=True, db_filname="pf.db"):
         self.db = sqlite3.connect(db_filname)
@@ -40,7 +41,7 @@ class Database:
         c.execute("INSERT INTO joueurs (nom_joueur, nom_perso, role) VALUES(?,?,?)", info)
         conn.commit()
 
-    #TODO améliorer
+    # TODO améliorer
     def add_perso(self, nom_perso="empty", f=10, dex=10, con=10, inte=10, sag=10, cha=10, race="Nain"):
 
         c = self.db.cursor()
@@ -80,15 +81,15 @@ class Database:
     def get_weapon(self, w_id):
         conn = self.db
         arme_id = (w_id,)
-        print("getting weapon with id "+str(w_id))
+        print("getting weapon with id " + str(w_id))
         c = conn.cursor()
         c.execute('SELECT * FROM arme WHERE arme_id=?', arme_id)
         return c.fetchone()
 
-    def get_armor(self,a_id):
+    def get_armor(self, a_id):
         conn = self.db
         armor_id = (a_id,)
-        print("getting armor with id "+str(a_id))
+        print("getting armor with id " + str(a_id))
         c = conn.cursor()
         c.execute('SELECT * FROM armure WHERE armure_id=?', armor_id)
         return c.fetchone()

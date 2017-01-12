@@ -5,12 +5,12 @@ import math
 from database import Database
 
 
-############### RECUPERER MODIF CARAC ################
+# ############## RECUPERER MODIF CARAC ################
 def get_mod(val):
     return math.floor((val - 10) / 2)
 
 
-##############CLASSE DE##############
+# #############CLASSE DE##############
 class Dice:
     def __init__(self, value=20, crit=20):
         self.value = value
@@ -27,57 +27,63 @@ class Dice:
         return r
 
 
-############## CLASSE ITEM ###########
+# ############# CLASSE ITEM ###########
 
-#TODO Classe Item dont héritent les armes, armures et stuff
-#Avec une méthode create_item() pour ajouter les items à la DB correspondante
+# TODO Classe Item dont héritent les armes, armures et stuff
+# Avec une méthode create_item() pour ajouter les items à la DB correspondante
 
 class Item:
     def __init__(self, i_id=0):
         print("Work in progress")
         self.i_id = i_id
-        self.place = "tete" #TODO à ajuster hein
-        #TODO "interface" pour relier un Item à une table de la DB (arme, armure, collier, gants...)
+        self.place = "tete"  # TODO à ajuster hein
+        # TODO "interface" pour relier un Item à une table de la DB (arme, armure, collier, gants...)
 
-############## CLASSE ARME ###########
+
+# ############# CLASSE ARME ###########
 class Arme():
     def __init__(self, w_id=0):
-        #TODO : update quand il y a deux dés de dégâts (cimeterre à deux mains)
+        # TODO : update quand il y a deux dés de dégâts (cimeterre à deux mains)
         print("toto")
         request = db.get_weapon(w_id)
         crit_data = str(request[4]).split('/')
         if len(crit_data) == 2:
-            zone = str(request[4]).split('/')[0] # split pour récupérer la zone de critique
-            mult = str(request[4]).split('/')[1] # split pour récupérer le multiplicateur de critique
-        else :
+            zone = str(request[4]).split('/')[0]  # split pour récupérer la zone de critique
+            mult = str(request[4]).split('/')[1]  # split pour récupérer le multiplicateur de critique
+        else:
             zone = 20
             mult = crit_data[0]
         self.name = request[1]
         self.damage = request[2]
-        self.nb_dice = 1 #TODO pour le nb de dés
+        self.nb_dice = 1  # TODO pour le nb de dés
         self.crit = zone
         self.critmul = mult
-        self.hands = request[3] + 1 # It works. arme à deux mains ou à trois mains. Oui oui.
+        self.hands = request[3] + 1  # It works. arme à deux mains ou à trois mains. Oui oui.
 
-############# CLASSE ÉQUIPÉ (OBJETS PORTÉS) ############
-#TODO : A modifier : Utiliser un dictionnaire avec les ID des différents objets à chaque emplacement
+
+# ############ CLASSE ÉQUIPÉ (OBJETS PORTÉS) ############
+# TODO : A modifier : Utiliser un dictionnaire avec les ID des différents objets à chaque emplacement
 class Equipe:
-    def __init__(self, md=0, armor=0, mg=0, tete=0, front=0, yeux=0, epaules=0,corps=0, torse=0, poignets=0, anneau1=0, anneau2=0, cou=0, taille=0, pieds=0):
+    def __init__(self, md=0, armor=0, mg=0, tete=0, front=0, yeux=0, epaules=0, corps=0, torse=0, poignets=0, anneau1=0,
+                 anneau2=0, cou=0, taille=0, pieds=0):
         # dictionnaire du stuff équipé
-        self.slot = {'tete': tete, 'front': front, 'yeux': yeux, 'epaules': epaules, 'corps': corps, 'torse': torse, 'poignets': poignets, 'mg': mg, 'md': md, 'anneau1': anneau1, 'anneau2': anneau2, 'armure': armor, 'cou': cou, 'taille': taille, 'pieds': pieds}
+        self.slot = {'tete': tete, 'front': front, 'yeux': yeux, 'epaules': epaules, 'corps': corps, 'torse': torse,
+                     'poignets': poignets, 'mg': mg, 'md': md, 'anneau1': anneau1, 'anneau2': anneau2, 'armure': armor,
+                     'cou': cou, 'taille': taille, 'pieds': pieds}
 
     def set_item(self, place, i_id):
         self.slot[place] = i_id
 
-    def print_item(self,place):
+    def print_item(self, place):
         print(self.slot[place])
 
     def print_all_equiped(self):
         print(self.slot.values())
 
-############# CLASSE ARMURE ##########
+
+# ############ CLASSE ARMURE ##########
 class Armure:
-    #TODO : Ajouter un attribut "catégorie" pour limiter les ports d'armures (ex. mages)
+    # TODO : Ajouter un attribut "catégorie" pour limiter les ports d'armures (ex. mages)
     def __init__(self, a_id):
         request = db.get_armor(a_id)
         self.name = request[1]
@@ -86,20 +92,21 @@ class Armure:
         self.malus_test = request[4]
         self.echec_sort = request[5]
 
-############# CLASSE STUFF (AUTRES OBJETS) #########
-#TODO bientôt déprecié
+
+# ############ CLASSE STUFF (AUTRES OBJETS) #########
+# TODO bientôt déprecié
 class Stuff:
     def __init__(self, car_mod=None, val=0):
         self.car_mod = car_mod
         self.value = val
 
 
-############# CLASSE PERSONNAGE #############
+# ############ CLASSE PERSONNAGE #############
 class Perso:
-    def __init__(self, name, race,equip, mlvl=1, mbba=0,
+    def __init__(self, name, race, equip, mlvl=1, mbba=0,
                  forc=10, dex=10, con=10, inte=10, sag=10, cha=10,
                  vig=0, ref=0, vol=0):
-        #TODO : demander si perso à charger depuis DB ou si nouveau perso
+        # TODO : demander si perso à charger depuis DB ou si nouveau perso
         self.name = name
         self.race = race
         self.stats = [forc, dex, con, inte, sag, cha]
@@ -112,13 +119,13 @@ class Perso:
         self.equipement = equip
         self.sac = []
 
-    #ajouter un objet au sac
-    def add_sac(self,item_id):
+    # ajouter un objet au sac
+    def add_sac(self, item_id):
         self.sac.append(item_id)
 
-    def wear(self,objet):
+    def wear(self, objet):
         possede = False
-        for i in range(0,len(self.sac)):
+        for i in range(0, len(self.sac)):
             if objet.i_id == self.sac[i]:
                 possede = True
         if possede is False:
@@ -127,13 +134,10 @@ class Perso:
         else:
             self.equipement.set_item(objet.place, objet.i_id)
 
-
-
     def jet_comp(self, comp):
         print("Se préparer à attaquer la partie longue...")
-        #penser au mod. Dex limité par l'armure
-        #et au malus d'armure
-
+        # penser au mod. Dex limité par l'armure
+        # et au malus d'armure
 
     # calculer et lancer jet d'attaque
     def atk(self, arme, mode=0, other=0):
@@ -187,7 +191,8 @@ def shell():
 
         elif comm[0] == "add_perso":
             if len(comm) is not 9:
-                print("error with arguments (usage : " + comm[0] + " <nom_perso> <race> <force> <dexterite> <constitution> <intelligence> <sagesse> <charisme>")
+                print("error with arguments (usage : " + comm[0] +
+                      " <nom_perso> <race> <force> <dexterite> <constitution> <intelligence> <sagesse> <charisme>")
             else:
                 try:
                     # TODO prendre race en compte
@@ -214,12 +219,17 @@ def shell():
 
 if __name__ == '__main__':
     print("Welcome to Pythfinder <3")
-    db = Database(False) # !! mettre à True pour drop toute la DB !!
-    #db.update_weapons()
-    #db.update_armors()
-#TODO : créer fonction db.save_perso(self, perso) et db.load_perso(self,nom_perso,perso_dest) pour charger/sauver des profils dans la db
+    update_db = False
+    db = Database(update_db)  # !! mettre à True pour drop toute la DB !!
 
-    #pas mal de tests, décommenter en cas de debug
+    if update_db:
+        db.update_weapons()
+        db.update_armors()
+
+    # TODO : créer fonction db.save_perso(self, perso) et db.load_perso(self,nom_perso,perso_dest) pour charger/sauver
+    # TODO des profils dans la db
+
+    # pas mal de tests, décommenter en cas de debug
     # db.add_user('fafa', 'lolo', 'testeur')
     # db.add_perso('fafa', 12, 10, 20, 3, 2, 6)
     # db.get_carac('fafa')
