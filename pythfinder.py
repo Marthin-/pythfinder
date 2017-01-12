@@ -1,7 +1,8 @@
 #!/usr/bin/env python
-import sqlite3
-import random
 import math
+import random
+import sqlite3
+
 from database import Database
 
 
@@ -25,6 +26,9 @@ class Dice:
         if r == 1:
             print("fumble !")
         return r
+
+    def __str__(self):
+        return "{}({})".format(self.value, self.crit)
 
 
 # ############# CLASSE ITEM ###########
@@ -55,10 +59,15 @@ class Arme():
             mult = crit_data[0]
         self.name = request[1]
         self.damage = request[2]
-        self.nb_dice = 1  # TODO pour le nb de dés
+        print(request)
+        self.nb_dice = request[3]
         self.crit = zone
         self.critmul = mult
         self.hands = request[3] + 1  # It works. arme à deux mains ou à trois mains. Oui oui.
+
+    def __str__(self):
+        return "{0} : dégats : {1}d{2} crit : {3}{4} main : {5}".format(self.name, self.nb_dice, self.damage,
+                                                                        self.crit, self.critmul, self.hands)
 
 
 # ############ CLASSE ÉQUIPÉ (OBJETS PORTÉS) ############
@@ -91,6 +100,10 @@ class Armure:
         self.max_dex = request[3]
         self.malus_test = request[4]
         self.echec_sort = request[5]
+
+    def __str__(self):
+        return "{} : armure {} dext {}  malus {} echec {}".format(self.name, self.value, self.max_dex,
+                                                                  self.malus_test, self.echec_sort)
 
 
 # ############ CLASSE STUFF (AUTRES OBJETS) #########
@@ -241,7 +254,8 @@ if __name__ == '__main__':
     # attack = pj.atk(Arme(15))
     # print("jet d'attaque : " + str(attack))
     # db.get_weapon(15)
-    uneArme = Arme(15)
+    uneArme = Arme(54)
+    print(uneArme)
     print("test du morgenstern :")
     print(uneArme.name)
     uneArmure = Armure(7)

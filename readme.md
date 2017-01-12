@@ -2,6 +2,8 @@
 
 __Utilitaire en python pour porter le système de Pathfinder sur PC et automatiser (entre autres) les feuilles de personnage, les jets de dés, etc...__
 
+[![Build Status](https://travis-ci.org/Marthin-/pythfinder.png)](https://travis-ci.org/Marthin-/pythfinder)
+
 ## Étape 1 : portage du système
 * Mini shell pour debug [ ✔]
 * DB avec sqlite3 [ ✔]
