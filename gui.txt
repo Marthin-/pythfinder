@@ -1,0 +1,28 @@
+============================================================================================
+| Menu | Personnage | Inventaire | Sorts |                                                 |
+============================================================================================
+|            chat                 |        Logs de jeu             |     Nom Personnage    |
+|                                 |                                | PV : x/y [#######---] |
+|                                 |                                | Défenses : CA    Ref  |
+|                                 |                                |            Vig   Vol  |
+|                                 |                                | Équipement* :         |
+|                                 |                                | - xxx                 |
+|                                 |                                | - xxx                 |
+|                                 |                                | - xxx                 |
+|                                 |                                |                       |
+|                                 |                                |                       |
+|                                 |                                |-----------------------|
+|                                 |                                |    Rappel Commandes   |
+|                                 |                                |                       |
+|                                 |                                | t : mode chat         |
+|                                 |                                | i : inventaire        |
+|                                 |                                | d : lancer de dé      |
+|                                 |                                | j: liste des joueurs  |
+|                                 |                                | ↑↓ : déplacer chat    |
+|                                 |                                | ctrl + ↑↓ : dép. logs |
+|                                 |                                | s : liste de sorts    |
+|                                 |                                | à compléter           |
+|                                 |                                |                       |
+|_________________________________|________________________________|_______________________|
+
+* La section "Équipement" apparaît seulement si un emplacement est rempli
