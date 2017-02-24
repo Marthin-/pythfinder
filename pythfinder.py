@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 import math
 import random
 import sqlite3
@@ -238,7 +238,7 @@ def shell():
                 print("en cours d'implé")
                 print("perso : %s, arme : %s, mode : %s, bonus : %s" % (comm[1], comm[2], comm[3], comm[4],))
 
-        elif comm[0] == "exit":
+        elif comm[0] == "exit" or comm[0] == "quit":
             print("Exiting pythfinder shell...")
             break
 
@@ -275,5 +275,5 @@ if __name__ == '__main__':
     print("Test de l'armure matelassée :")
     print(uneArmure.name)
     print("Test de la flamberge de feu +1000")
-    unParser = JsonParser('test.json')
+    unParser = JsonParser('data/test.json')
     shell()
