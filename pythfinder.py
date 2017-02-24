@@ -106,8 +106,9 @@ class Armure:
         return "{} : armure {} dext {}  malus {} echec {}".format(self.name, self.value, self.max_dex,
                                                                   self.malus_test, self.echec_sort)
 
+
 # ############### CLASSE JsonParser #################
-## Classe qui parse un fichier json et ajoute l'objet parsé à la BDD
+# # Classe qui parse un fichier json et ajoute l'objet parsé à la BDD
 # TODO implé
 # from pprint import pprint
 class JsonParser:
