@@ -2,6 +2,7 @@
 import math
 import random
 import sqlite3
+import json
 
 from database import Database
 
@@ -37,7 +38,7 @@ class Dice:
 # Avec une méthode create_item() pour ajouter les items à la DB correspondante
 
 class Item:
-    def __init__(self, i_id=0):
+    def __init__(self, i_id=0, place="tete"):
         print("Work in progress")
         self.i_id = i_id
         self.place = "tete"  # TODO à ajuster hein
@@ -104,6 +105,18 @@ class Armure:
     def __str__(self):
         return "{} : armure {} dext {}  malus {} echec {}".format(self.name, self.value, self.max_dex,
                                                                   self.malus_test, self.echec_sort)
+
+# ############### CLASSE JsonParser #################
+## Classe qui parse un fichier json et ajoute l'objet parsé à la BDD
+# TODO implé
+# from pprint import pprint
+class JsonParser:
+    def __init__(self, file):
+        self.data = ""
+        with open(file) as data_file:
+            self.data = json.load(data_file)
+        print(self.data)
+        # pprint(data)
 
 
 # ############ CLASSE STUFF (AUTRES OBJETS) #########
@@ -261,4 +274,6 @@ if __name__ == '__main__':
     uneArmure = Armure(7)
     print("Test de l'armure matelassée :")
     print(uneArmure.name)
+    print("Test de la flamberge de feu +1000")
+    unParser = JsonParser('test.json')
     shell()

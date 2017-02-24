@@ -1,0 +1,19 @@
+{
+  "objet": {
+    "place": "arme",
+    "nom": "flamberge de feu +1000",
+    "carac_arme": {
+      "damage": "10",
+      "nb_dice": "2",
+      "bonus_attaque": "1000",
+      "bonus_degats": "1000",
+      "critique": "18",
+      "multi_critique": "3"
+    },
+    "bonus_carac": [
+      {"carac": "for", "bonus": "+2"},
+      {"carac": "dex", "bonus": "+1"}
+    ],
+    "effet": "C'est une flamberge qui fait du feu. Elle coupe un peu aussi."
+  }
+}
