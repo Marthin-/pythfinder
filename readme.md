@@ -32,9 +32,13 @@ __Utilitaire en python pour porter le système de Pathfinder sur PC et automatis
     * Méthode ajouts de dons
     * Ajout à BDD
     * table de dons sur perso
+      * flag "compétence" pour en tenir compte pour les jets
+      * variable modifiée par le don : à choisir dans 
+      * à cocher ou décocher pour en tenir compte (selon situation)
   * Perso
     * tenir compte effets de sorts
     * tenir compte des dons
+      * pour ça : au moment du lancer de dé mettre une popup avec les différents bonus qui pourraient s'appliquer
     
 * Objets
   * Armes / Armures magiques
