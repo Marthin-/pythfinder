@@ -64,6 +64,7 @@ class Arme():
         self.nb_dice = request[3]
         self.crit = zone
         self.critmul = mult
+        # TODO : ajouter un champ dans la db arme pour le nombre de mains
         self.hands = request[3] + 1  # It works. arme à deux mains ou à trois mains. Oui oui.
 
     def __str__(self):
