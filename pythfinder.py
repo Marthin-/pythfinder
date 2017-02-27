@@ -106,9 +106,11 @@ class Armure:
         return "{} : armure {} dext {}  malus {} echec {}".format(self.name, self.value, self.max_dex,
                                                                   self.malus_test, self.echec_sort)
 
+
 # ############### CLASSE JsonParser #################
-# Classe qui parse un fichier json et ajoute l'objet parsé à la BDD
+# # Classe qui parse un fichier json et ajoute l'objet parsé à la BDD
 # TODO implé
+# from pprint import pprint
 class JsonParser:
     def __init__(self, file):
         self.data = ""
@@ -274,5 +276,5 @@ if __name__ == '__main__':
     print("Test de l'armure matelassée :")
     print(uneArmure.name)
     print("Test de la flamberge de feu +1000")
-    unParser = JsonParser('data/fonzie508.json')
+    unParser = JsonParser('data/test.json')
     shell()

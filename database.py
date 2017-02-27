@@ -2,6 +2,10 @@ import sqlite3
 
 
 class Database:
+    """
+        Interface for pythfinder database.
+        Handle creation/update/communication
+    """
     # TODO: possibilité de rajouter des objets à la DB (ex. Armes magiques) : En entrant les dégâts, le type d'arme,
     # TODO et les effets supplémentaires.
     # TODO (Je le met ici pour penser à modifier un peu le code de la gestion de DB pour ne pas effacer à chaque fois
@@ -32,6 +36,7 @@ class Database:
             print("Error creating sql database {}".format(error))
 
     def __del__(self):
+        """ Close the database connection when the object is destroyed. """
         self.db.close()
 
     def add_user(self, nom_perso="empty", nom_joueur="nobody", role="useless"):
