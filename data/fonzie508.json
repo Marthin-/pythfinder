@@ -1,0 +1,18 @@
+{
+"objet": {"place": "main",
+"nom": "fonzie",
+"carac_arme": {
+"damage": "1",
+"nb_dice": "1",
+"bonus_attaque": "1",
+"bonus_degats": "1",
+"critique": "1",
+"multi_critique": "1"
+},
+"carac_armure": {
+},
+"bonus_carac": [
+{"carac": "for", "bonus": "1"}],
+"effet": "af faz"
+}
+}

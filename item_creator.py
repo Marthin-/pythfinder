@@ -1,13 +1,14 @@
 #!/usr/bin/env python3
 
 from random import randint # pour générer le nom de fichier
-
-print("Bienvenue dans l'éditeur d'objets de pythfinder")
+from subprocess import *
+import os
+print("Bienvenue dans l\"éditeur d\"objets de pythfinder")
 print("Choisissez le nom de votre objet")
 
 nom = str(input("Nom :"))
 
-print("Choisissez le type (l'emplacement) d'objet dans la liste :")
+print("Choisissez le type (l\"emplacement) d\"objet dans la liste :")
 print("1 : Arme")
 print("2 : Armure")
 print("3 : Tête (casque...)")
@@ -32,7 +33,7 @@ if choix == "1":
     damage = str(input(">>> "))
     print("Nombre de dés de dégâts")
     nb_dice = str(input(">>> "))
-    print("Bonus à l'attaque :")
+    print("Bonus à l\"attaque :")
     bonus_attaque = str(input(">>> "))
     print("Bonus aux dégâts :")
     bonus_degats = str(input(">>> "))
@@ -42,7 +43,7 @@ if choix == "1":
     multi_critique = str(input(">>> "))
 elif choix == "2":
     place = "armure"
-    print("bonus de CA (base + bonus d'alteration)")
+    print("bonus de CA (base + bonus d\"alteration)")
     bonus_ca = str(input(">>> "))
     print("mod. dex. maximal (Ex. : 2)")
     max_dex = str(input(">>> "))
@@ -73,68 +74,55 @@ elif choix == "12":
 elif choix == "13":
     place = "pieds"
 else:
-    print("Pas d'emplacement valide")
+    print("Pas d\"emplacement valide")
     exit()
 
 print("nombre de bonus aux caractéristiques (1,2,3...)")
 imax = int(input(">>> "))
 
-bonus_string = "\'bonus_carac\': [\n"
+bonus_string = "\"bonus_carac\": [\n"
 for i in range(0, imax):
     print("caractéristique (for, dex, con, int, sag, cha)")
     carac = str(input(">>> "))
-    print("bonus : (1,2...")
+    print("bonus : (1,2...)")
     bonus = str(input(">>> "))
-    bonus_string = bonus_string + "{\'carac\': \'" + carac + "\', \'bonus\': \'" + bonus + "\'}"
+    bonus_string = bonus_string + "{\"carac\": \"" + carac + "\", \"bonus\": \"" + bonus + "\"}"
     if i < imax - 1:
         bonus_string = bonus_string + ",\n"
+bonus_string = bonus_string + "],\n"
 print("Description (effet)")
 effet = str(input(">>> "))
 
-filename = nom.split(' ') + str(randint(1, 512)) + ".json"
+filename = str(nom.split(' ')[0]) + str(randint(1, 512)) + ".json"
+print(filename)
 
-file = open(filename)
-file.write("{")
-file.write("\'objet\': {")
-file.write("'place': '"+place+"',")
-file.write("'nom': '"+nom+"',")
-file.write("'carac_arme': {")
+commande = ["touch","data/"+str(filename)]
+out=Popen(commande,stdout=PIPE)
+(sout,serr)=out.communicate()
+print(sout)
+
+os.chmod("data/"+filename, 502)
+
+file = open("data/"+filename, 'w')
+file.write("{\n")
+file.write("\"objet\": {")
+file.write("\"place\": \""+place+"\",\n")
+file.write("\"nom\": \""+nom+"\",\n")
+file.write("\"carac_arme\": {\n")
 if choix == "1":
-    file.write("'damage': '"+damage+"',")
-    file.write("'nb_dice': '"+nb_dice+"',")
-    file.write("'bonus_attaque': '"+bonus_attaque+"',")
-    file.write("'bonus_degats': '"+bonus_degats+"',")
-    file.write("'critique': '"+critique+"',")
-    file.write("'multi_critique': '"+multi_critique+"'")
-    file.write("},")
-
-file.write("'carac_armure': {")
-file.write("'CA': '"+bonus_ca+"',")
-#TODO la suite
-file.write()
-
-{
-  "objet": {
-    "place": "deux_mains",
-    "nom": "flamberge de feu +1000",
-    "carac_arme": {
-      "damage": "10",
-      "nb_dice": "2",
-      "bonus_attaque": "1000",
-      "bonus_degats": "1000",
-      "critique": "18",
-      "multi_critique": "3"
-    },
-    "carac_armure": {
-        "CA": "4",
-        "max_dex": "2",
-        "malus_tests": "2",
-        "echec_sort": "20"
-    },
-    "bonus_carac": [
-      {"carac": "for", "bonus": "+2"},
-      {"carac": "dex", "bonus": "+1"}
-    ],
-    "effet": "C'est une flamberge qui fait du feu. Elle coupe un peu aussi."
-  }
-}
+    file.write("\"damage\": \""+damage+"\",\n")
+    file.write("\"nb_dice\": \""+nb_dice+"\",\n")
+    file.write("\"bonus_attaque\": \""+bonus_attaque+"\",\n")
+    file.write("\"bonus_degats\": \""+bonus_degats+"\",\n")
+    file.write("\"critique\": \""+critique+"\",\n")
+    file.write("\"multi_critique\": \""+multi_critique+"\"\n")
+    file.write("},\n")
+file.write("\"carac_armure\": {\n")
+if choix == "2":
+    file.write("\"CA\": \""+bonus_ca+"\",\n")
+    file.write("\"max_dex\": \""+max_dex+"\",\n")
+    file.write("\"malus_tests\": \""+malus_tests+"\",\n")
+    file.write("\"echec_sort\": \""+echec_sort+"\"\n},")
+file.write("},\n")
+file.write(bonus_string)
+file.write("\"effet\": \""+effet+"\"\n}\n}")
