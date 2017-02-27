@@ -1,8 +1,9 @@
 #!/usr/bin/env python3
 
-from random import randint # pour générer le nom de fichier
-from subprocess import *
 import os
+from random import randint  # pour générer le nom de fichier
+from subprocess import *
+
 if __name__ == "__main__":
     print("Bienvenue dans l\"éditeur d\"objets de pythfinder")
     print("Choisissez le nom de votre objet")
@@ -95,9 +96,9 @@ if __name__ == "__main__":
     filename = str(nom.split(' ')[0]) + str(randint(1, 512)) + ".json"
     print(filename)
 
-    commande = ["touch","data/"+str(filename)]
-    out=Popen(commande,stdout=PIPE)
-    (sout,serr)=out.communicate()
+    commande = ["touch", "data/"+str(filename)]
+    out = Popen(commande, stdout=PIPE)
+    (sout, serr) = out.communicate()
     print(sout)
 
     os.chmod("data/"+filename, 502)
