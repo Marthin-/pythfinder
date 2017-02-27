@@ -116,7 +116,7 @@ if __name__ == "__main__":
         file.write("\"bonus_degats\": \""+bonus_degats+"\",\n")
         file.write("\"critique\": \""+critique+"\",\n")
         file.write("\"multi_critique\": \""+multi_critique+"\"\n")
-        file.write("},\n")
+    file.write("},\n")
     file.write("\"carac_armure\": {\n")
     if choix == "2":
         file.write("\"CA\": \""+bonus_ca+"\",\n")
