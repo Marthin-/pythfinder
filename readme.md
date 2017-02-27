@@ -40,8 +40,8 @@ __Utilitaire en python pour porter le système de Pathfinder sur PC et automatis
   * Armes / Armures magiques
     * Méthode ajout objets persos à BDD
   * Objets magiques
-    * Tables pour différents objets en fonction d'emplacement
-  * Possibilité de créer ses objets en éditant un fichier json
+    * champ pour différents objets en fonction d'emplacement
+  * Possibilité de créer ses objets en éditant un fichier json [ ✔]
   
 * GUI
   * premier jet en curses
