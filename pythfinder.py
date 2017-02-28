@@ -1,8 +1,9 @@
 #!/usr/bin/env python3
+import json
 import math
+import os
 import random
 import sqlite3
-import json
 
 from database import Database
 
@@ -111,14 +112,27 @@ class Armure:
 # ############### CLASSE JsonParser #################
 # # Classe qui parse un fichier json et ajoute l'objet parsé à la BDD
 # TODO implé
-# from pprint import pprint
+
 class JsonParser:
-    def __init__(self, file):
-        self.data = ""
-        with open(file) as data_file:
-            self.data = json.load(data_file)
-        print(self.data)
-        # pprint(data)
+    def __init__(self):
+        self.data = []
+        i = 0
+        os.chdir("data/")
+        for fonzie in os.listdir("."):
+            with open(fonzie) as data_file:
+                self.data.append(json.load(data_file))
+                # print(json.dumps(self.data[i], sort_keys=False, indent=4, separators=(': ', ','))) # pour debug
+                # i += 1
+        # print(json.dumps(self.data, sort_keys=False, indent=4, separators=(': ', ',')))
+
+    def add_item(self, item_number):
+        # TODO : faire un switch sur le type d'objet pour mettre dans db arme, armure, objet
+        # TODO² : Check pour éviter les doublons
+        db.insert_weapon_from_parsed_json(self.data[item_number])
+
+    def add_all_dir(self):
+        for i in range(0, len(self.data)):
+            db.insert_weapon_from_parsed_json(self.data[i])
 
 
 # ############ CLASSE STUFF (AUTRES OBJETS) #########
@@ -276,6 +290,6 @@ if __name__ == '__main__':
     uneArmure = Armure(7)
     print("Test de l'armure matelassée :")
     print(uneArmure.name)
-    print("Test de la flamberge de feu +1000")
-    unParser = JsonParser('data/test.json')
+    print("Test de frotifrota le grand")
+    unParser = JsonParser()
     shell()
